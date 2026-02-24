@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.log
+
+# Allure
+allure-results/
+allure-report/
+
+# Docker
+*.bak
+*.backup
+
+# OS
+.DS_Store
+
+# Temporary files
+test_driver.py

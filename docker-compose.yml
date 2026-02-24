@@ -1,0 +1,34 @@
+services:
+  selenoid:
+    image: aerokube/selenoid:1.11.3
+    ports:
+      - "4444:4444"
+    volumes:
+      - "./selenoid/config:/etc/selenoid"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "10"]
+    networks:
+      - testnet
+
+  tests:
+    build: .
+    depends_on:
+      - selenoid
+    environment:
+      - SELENOID_URL=http://selenoid:4444/wd/hub
+    networks:
+      - testnet
+    command: >
+      sh -c "
+        echo 'Waiting for Selenoid...';
+        while ! nc -z selenoid 4444; do
+          sleep 1;
+        done;
+        echo 'Selenoid port open, waiting 3s...';
+        sleep 3;
+        pytest --remote --selenoid_url=http://selenoid:4444/wd/hub
+      "
+
+networks:
+  testnet:
+    driver: bridge
