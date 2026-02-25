@@ -14,16 +14,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+    - name: Pull Selenoid browser image
+      run: docker pull selenoid/vnc_chrome:128.0
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Run tests
-      run: pytest tests/
-
+    - name: Run tests via Docker Compose
+      run: docker compose up --build --abort-on-container-exit --exit-code-from tests
