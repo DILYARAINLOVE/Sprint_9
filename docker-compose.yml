@@ -7,7 +7,7 @@ services:
     volumes:
       - "./selenoid/config:/etc/selenoid"
       - "/var/run/docker.sock:/var/run/docker.sock"
-    command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "10"]
+    command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "10", "-container-network", "sprint_9_testnet"]
     networks:
       - testnet
 
