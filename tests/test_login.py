@@ -1,11 +1,16 @@
-# Sprint 9 review
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
 
 class TestLogin:
     def test_login(self, driver, user, login_page, main_page):
-        # Предварительно нужно создать пользователя (через API или UI)
-        # Для простоты будем считать, что пользователь уже существует
-        driver.get("https://foodgram.example.com/login")  # прямой переход
+        driver.get("https://foodgram.example.com/login")
         login_page.login(user.email, user.password)
+
+        # Ожидаем появления кнопки выхода (замените селектор на реальный)
+        WebDriverWait(driver, 20).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".logout-button"))
+        )
         assert main_page.is_logout_displayed(), "Кнопка выхода не отображается"
