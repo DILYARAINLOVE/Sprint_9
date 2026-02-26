@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop, final-pr ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Pull Selenoid browser image
+      run: docker pull selenoid/vnc_chrome:128.0
+
+    - name: Run tests via Docker Compose
+      run: docker compose up --build --abort-on-container-exit --exit-code-from tests
